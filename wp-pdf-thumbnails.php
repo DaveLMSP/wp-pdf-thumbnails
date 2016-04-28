@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: WP PDF Thumbnails
-Version: 0.0.1
+Version: 1.0.0
 Author: Dave Long
 Description: Creates a thumbnail from the first page of uploaded PDF(s).
 */
@@ -18,6 +18,8 @@ $pdf_thumbnails = new WP_PDF_Thumbnails;
  * Create thumbnail from first page of uploaded PDF(s).
  */
 class WP_PDF_Thumbnails {
+
+	private $imagick_available;
 	
 	/**
 	 * Constructor - Set up action hooks
@@ -25,6 +27,7 @@ class WP_PDF_Thumbnails {
 	 * @return WP_PDF_Thumbnails
 	 */
 	public function __construct() {
+		$this->imagick_available = false;
 
 		/* WordPress Admin Actions */
 		add_action( 'admin_head', array( &$this, 'check_plugin_dependencies' ) );
@@ -63,7 +66,7 @@ class WP_PDF_Thumbnails {
 	 * @return int $attachment_id
 	 */
 	public function add_attachment( $attachment_id ) {
-		if( 'application/pdf' == get_post_mime_type ( $attachment_id ) ) {
+		if( $this->imagick_available && 'application/pdf' == get_post_mime_type ( $attachment_id ) ) {
 			$file = get_attached_file( $attachment_id );
 			$file_name = esc_attr( get_the_title( $attachment_id ) );
 			$thumbnail_url = $this->generate_pdf_thumbnail( $file );
@@ -114,6 +117,9 @@ class WP_PDF_Thumbnails {
 		// Check for ImageMagick extension & display warning if not found
 		if( !class_exists( 'Imagick' ) ) {
 			echo( '<div class="error"><strong>WARNING: ImageMagick not found.  PDF thumbnail generation will not be available.</strong></div>' );
+		}
+		else {
+			$this->imagick_available = true;
 		}
 	}
 
