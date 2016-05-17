@@ -27,7 +27,13 @@ class WP_PDF_Thumbnails {
 	 * @return WP_PDF_Thumbnails
 	 */
 	public function __construct() {
-		$this->imagick_available = false;
+		// Check for ImageMagick extension & disable thumbnail creation if not found
+		if( !class_exists( 'Imagick' ) ) {
+			$this->imagick_available = false;
+		}
+		else {
+			$this->imagick_available = true;
+		}
 
 		/* WordPress Admin Actions */
 		add_action( 'admin_head', array( &$this, 'check_plugin_dependencies' ) );
@@ -114,12 +120,9 @@ class WP_PDF_Thumbnails {
 	 * @return void
 	 */
 	public function check_plugin_dependencies() {
-		// Check for ImageMagick extension & display warning if not found
-		if( !class_exists( 'Imagick' ) ) {
+		// Display warning if ImageMagick extension not found
+		if( !$this->imagick_available ) {
 			echo( '<div class="error"><strong>WARNING: ImageMagick not found.  PDF thumbnail generation will not be available.</strong></div>' );
-		}
-		else {
-			$this->imagick_available = true;
 		}
 	}
 
