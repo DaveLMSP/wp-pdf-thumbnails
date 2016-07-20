@@ -2,8 +2,8 @@
 Contributors: dystrust
 Tags: pdf thumbnail, pdf, thumbnail, image magick, imagick, plugin
 Requires at least: 4.0
-Tested up to: 4.5.1
-Stable tag: 1.0.0
+Tested up to: 4.5.3
+Stable tag: 1.0.1
 License: GPLv3
 
 This plugin automatically creates a thumbnail from the first page of any uploaded PDF.
@@ -29,6 +29,9 @@ WP PDF Thumbnails requires ImageMagick with GhostScript support and the imagick 
 If ImageMagick is not available, existing thumbnails will continue to work normally while creation of new thumbnails is disabled.  Thumbnail creation will resume when ImageMagick becomes available.
 
 == Changelog ==
+
+= 1.0.1 =
+* Fixed incorrect guid on thumbnail attachments
 
 = 1.0.0 =
 * Initial public version of WP PDF Thumbnails uploaded to GitHub.  

@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: WP PDF Thumbnails
-Version: 1.0.0
+Version: 1.0.1
 Author: Dave Long
 Description: Creates a thumbnail from the first page of uploaded PDF(s).
 */
@@ -77,8 +77,9 @@ class WP_PDF_Thumbnails {
 			$file_name = esc_attr( get_the_title( $attachment_id ) );
 			$thumbnail_url = $this->generate_pdf_thumbnail( $file );
 			if( file_exists( $thumbnail_url ) ){
-				$dir_url = wp_get_attachment_url( $attachment_id );
+				$parent_url = wp_get_attachment_url( $attachment_id );
 				$attachment = array(
+					'guid' => $parent_url . '.jpg',
 					'post_type' => 'attachment',
 					'post_mime_type' => 'image/jpeg',
 					'post_title' => $file_name,
